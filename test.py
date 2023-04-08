@@ -28,10 +28,11 @@ def transcribe_from_link(link, categories):
         video = video.streams.get_highest_resolution()
 
         try:
+            print("Downloading")
             video.download("./download.mp4")
         except:
             print("Failed to download video")
-
+    get_vid(_id)
     save_location = "./download.mp4"
 
     def read_file(filename):
