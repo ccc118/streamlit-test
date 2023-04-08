@@ -15,7 +15,7 @@ ydl_opts = {
         {
             "key": "FFmpegExtractAudio",
             "preferredcodec": "mp3",
-            "prefferedquality": "192",
+            "preferredquality": "192",
         }
     ],
     "ffmpeg-location": "./",
