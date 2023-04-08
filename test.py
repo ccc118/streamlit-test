@@ -69,7 +69,7 @@ def transcribe_from_link(link, categories):
 
 st.title("An easy way to transcribe videos")
 link = st.text_input("Enter your youtube link below", "")
-transcribe_from_link(link)
+transcribe_from_link(link, False)
 
 
 option = st.selectbox(
