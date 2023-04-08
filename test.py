@@ -31,6 +31,9 @@ CHUNK_SIZE = 5242880
 
 @st.cache
 def transcribe_from_link(link, categories):
+    if link == "":
+        return 
+    
     _id = link.strip()
 
     def get_vid(_id):
