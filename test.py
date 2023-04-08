@@ -19,8 +19,8 @@ CHUNK_SIZE = 5242880
 @st.cache
 def transcribe_from_link(link, categories):
     if link == "":
-        return 
-    
+        return
+
     _id = link.strip()
 
     def get_vid(_id):
@@ -29,11 +29,13 @@ def transcribe_from_link(link, categories):
 
         try:
             print("Downloading")
-            video.download("./download.mp4")
+            path = video.download()
         except:
+            path = None
             print("Failed to download video")
-    get_vid(_id)
-    save_location = "./download.mp4"
+        return path
+
+    save_location = get_vid(_id)
 
     def read_file(filename):
         with open(filename, "r") as _file:
