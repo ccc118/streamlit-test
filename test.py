@@ -47,23 +47,28 @@ def transcribe_from_link(link, categories):
                 if not data:
                     break
                 yield data
-    upload_response = requests.post(upload_endpoint, 
-                                    headers = headers_auth_only,
-                                    data=read_file(save_location))
-    audio_url = upload_response.json()['upload_url']
-    
+
+    upload_response = requests.post(
+        upload_endpoint, headers=headers_auth_only, data=read_file(save_location)
+    )
+    audio_url = upload_response.json()["upload_url"]
+
     transcript_request = {
-            'audio_url': audio_url,
-            'iab_categories': 'True' if categories else 'False'}
-     
-    transcript_response = requests.post(transcript_endpoint, json=transcript_request, headers=headers)
-    
-    transcript_id = transcript_response.json()['id']
+        "audio_url": audio_url,
+        "iab_categories": "True" if categories else "False",
+    }
+
+    transcript_response = requests.post(
+        transcript_endpoint, json=transcript_request, headers=headers
+    )
+
+    transcript_id = transcript_response.json()["id"]
     polling_endpoint = transcript_endpoint + "/" + transcript_id
-    return polling_endpoint  
-   
+    return polling_endpoint
+
+
 st.title("An easy way to transcribe videos")
-link = st.text_input("Enter your youtube link below" ,"")
+link = st.text_input("Enter your youtube link below", "")
 transcribe_from_link(link)
 
 
