@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import youtube_dl
+from pytube import YouTube
 import requests
 import pprint
 from configure import auth_key
@@ -9,18 +9,6 @@ from time import sleep
 if "status" not in st.session_state:
     st.session_state["status"] = "submitted"
 
-ydl_opts = {
-    "format": "bestaudio/best",
-    "postprocessors": [
-        {
-            "key": "FFmpegExtractAudio",
-            "preferredcodec": "mp3",
-            "prefferedquality": "192",
-        }
-    ],
-    "ffmpeg-location": "./",
-    "outtmpl": "./%(id)s.%(ext)s",
-}
 
 transcript_endpoint = "https://api.assemblyai.com/v2/transcript"
 upload_endpoint = "https://api.assemblyai.com/v2/upload"
@@ -34,11 +22,15 @@ def transcribe_from_link(link, categories):
     _id = link.strip()
 
     def get_vid(_id):
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            return ydl.extract_info(_id)
+        video = YouTube(_id)
+        video = video.streams.get_highest_resolution()
 
-    meta = get_vid(_id)
-    save_location = meta["id"] + ".mp3"
+        try:
+            video.download("./download.mp4")
+        except:
+            print("Failed to download video")
+
+    save_location = "./download.mp4"
 
     def read_file(filename):
         with open(filename, "r") as _file:
