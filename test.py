@@ -9,7 +9,6 @@ from time import sleep
 if "status" not in st.session_state:
     st.session_state["status"] = "submitted"
 
-
 transcript_endpoint = "https://api.assemblyai.com/v2/transcript"
 upload_endpoint = "https://api.assemblyai.com/v2/upload"
 headers_auth_only = {"authorization": auth_key}
@@ -19,6 +18,9 @@ CHUNK_SIZE = 5242880
 
 @st.cache
 def transcribe_from_link(link, categories):
+    if link == "":
+        return 
+    
     _id = link.strip()
 
     def get_vid(_id):
@@ -61,7 +63,7 @@ def transcribe_from_link(link, categories):
 
 st.title("An easy way to transcribe videos")
 link = st.text_input("Enter your youtube link below", "")
-transcribe_from_link(link)
+transcribe_from_link(link, False)
 
 
 option = st.selectbox(
