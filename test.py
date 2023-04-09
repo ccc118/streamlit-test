@@ -38,7 +38,7 @@ def transcribe_from_link(link, categories):
     save_location = get_vid(_id)
 
     def read_file(filename):
-        with open(filename, "r") as _file:
+        with open(filename, "rb") as _file:
             while True:
                 data = _file.read(CHUNK_SIZE)
                 if not data:
