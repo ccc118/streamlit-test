@@ -16,7 +16,7 @@ headers = {"authorization": auth_key, "content-type": "application/json"}
 CHUNK_SIZE = 5242880
 
 
-@st.cache
+@st.cache_data
 def transcribe_from_link(link, categories):
     if link == "":
         return
@@ -63,11 +63,26 @@ def transcribe_from_link(link, categories):
     polling_endpoint = transcript_endpoint + "/" + transcript_id
     return polling_endpoint
 
+def get_status(polling_endpoint):
+    polling_response = requests.get(polling_endpoint, headers=headers)
+    st.session_state['status'] = polling_response.json()['status']
 
-st.title("An easy way to transcribe videos")
-link = st.text_input("Enter your youtube link below", "")
-transcribe_from_link(link, False)
+def refresh_state():
+    st.session_state['status']='submitted'
+    
 
+st.title("Tester")
+link = st.text_inpsut("Enter your youtube link below", "", on_change=refresh_state)
+polling_endpoint = transcribe_from_link(link, False)
+st.video(link) 
+st.text('The transcription is ' +  st.session_state["status"])
+
+st.button('check_status', on_click=get_status, args=(polling_endpoint,))
+transcript=''
+if st.session_state['status'] =='completed':
+    polling_response = requests.get(polling_endpoint, headers=headers)
+    transcript = polling_response.json()['text']
+st.markdown(transcript)
 
 option = st.selectbox(
     "Live today", ("Manchester United vs Brighton", "Chelsea vs Brentford")
