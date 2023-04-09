@@ -71,7 +71,7 @@ def refresh_state():
     st.session_state['status']='submitted'
     
 
-st.title("Tester")
+st.title("Transcription by AssemblyAI")
 api_key = st.text_input("Enter your API key", "")
 headers_auth_only = {"authorization": api_key}
 headers = {"authorization": api_key, "content-type": "application/json"}
