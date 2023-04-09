@@ -72,7 +72,7 @@ def refresh_state():
     
 
 st.title("Tester")
-link = st.text_inpsut("Enter your youtube link below", "", on_change=refresh_state)
+link = st.text_input("Enter your youtube link below", "", on_change=refresh_state)
 polling_endpoint = transcribe_from_link(link, False)
 st.video(link) 
 st.text('The transcription is ' +  st.session_state["status"])
