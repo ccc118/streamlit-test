@@ -3,7 +3,6 @@ import pandas as pd
 from pytube import YouTube
 import requests
 import pprint
-from configure import auth_key
 from time import sleep
 
 if "status" not in st.session_state:
