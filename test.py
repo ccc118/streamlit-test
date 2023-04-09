@@ -11,9 +11,9 @@ if "status" not in st.session_state:
 
 transcript_endpoint = "https://api.assemblyai.com/v2/transcript"
 upload_endpoint = "https://api.assemblyai.com/v2/upload"
-headers_auth_only = {"authorization": auth_key}
-headers = {"authorization": auth_key, "content-type": "application/json"}
 CHUNK_SIZE = 5242880
+headers_auth_only = {"authorization": ""}
+headers = {"authorization": "", "content-type": "application/json"}
 
 
 @st.cache_data
@@ -72,12 +72,17 @@ def refresh_state():
     
 
 st.title("Tester")
-link = st.text_input("Enter your youtube link below", "", on_change=refresh_state)
-polling_endpoint = transcribe_from_link(link, False)
-st.video(link) 
-st.text('The transcription is ' +  st.session_state["status"])
+api_key = st.text_input("Enter your API key", "")
+headers_auth_only = {"authorization": api_key}
+headers = {"authorization": api_key, "content-type": "application/json"}
 
-st.button('check_status', on_click=get_status, args=(polling_endpoint,))
+
+link = st.text_input("Enter your youtube link below", "", on_change=refresh_state)
+if link != "":
+    polling_endpoint = transcribe_from_link(link, False)
+    st.video(link) 
+    st.text('The transcription is ' +  st.session_state["status"])
+    st.button('check_status', on_click=get_status, args=(polling_endpoint,))
 transcript=''
 if st.session_state['status'] =='completed':
     polling_response = requests.get(polling_endpoint, headers=headers)
