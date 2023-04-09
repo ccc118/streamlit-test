@@ -72,24 +72,25 @@ def refresh_state():
 
 st.title("Transcription by AssemblyAI")
 api_key = st.text_input("Enter your API key", "")
-headers_auth_only = {"authorization": api_key}
-headers = {"authorization": api_key, "content-type": "application/json"}
+if api_key != "":
+    headers_auth_only = {"authorization": api_key}
+    headers = {"authorization": api_key, "content-type": "application/json"}
 
 
-link = st.text_input("Enter your youtube link below", "", on_change=refresh_state)
-if link != "":
-    polling_endpoint = transcribe_from_link(link, False)
-    st.video(link) 
-    st.text('The transcription is ' +  st.session_state["status"])
-    st.button('check_status', on_click=get_status, args=(polling_endpoint,))
-transcript=''
-if st.session_state['status'] =='completed':
-    polling_response = requests.get(polling_endpoint, headers=headers)
-    transcript = polling_response.json()['text']
-st.markdown(transcript)
+    link = st.text_input("Enter your youtube link below", "", on_change=refresh_state)
+    if link != "":
+        polling_endpoint = transcribe_from_link(link, False)
+        st.video(link) 
+        st.text('The transcription is ' +  st.session_state["status"])
+        st.button('check_status', on_click=get_status, args=(polling_endpoint,))
+    transcript=''
+    if st.session_state['status'] =='completed':
+        polling_response = requests.get(polling_endpoint, headers=headers)
+        transcript = polling_response.json()['text']
+    st.markdown(transcript)
 
-option = st.selectbox(
-    "Live today", ("Manchester United vs Brighton", "Chelsea vs Brentford")
-)
+    option = st.selectbox(
+        "Live today", ("Manchester United vs Brighton", "Chelsea vs Brentford")
+    )
 
-st.write("You selected:", option)
+    st.write("You selected:", option)
