@@ -77,7 +77,7 @@ if api_key != "":
     headers = {"authorization": api_key, "content-type": "application/json"}
 
 
-    link = st.text_input("Enter your youtube link below", "", on_change=refresh_state)
+    link = st.text_input("Enter your youtube link below", "https://www.youtube.com/watch?v=1aA1WGON49E", on_change=refresh_state)
     if link != "":
         polling_endpoint = transcribe_from_link(link, False)
         st.video(link) 
